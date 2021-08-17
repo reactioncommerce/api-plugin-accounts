@@ -139,7 +139,7 @@ input AddAccountEmailRecordInput {
   clientMutationId: String
 
   "The email address to add"
-  email: Email!
+  email: String!
 }
 
 "Defines which email address should be removed from which account"
@@ -151,7 +151,7 @@ input RemoveAccountEmailRecordInput {
   clientMutationId: String
 
   "The email address to remove"
-  email: Email!
+  email: String!
 }
 
 "Defines which email address should be set as the default for which account"
@@ -163,7 +163,7 @@ input SetAccountDefaultEmailInput {
   clientMutationId: String
 
   "The email address to set as default"
-  email: Email!
+  email: String!
 }
 
 input UpdateGroupsForAccountsInput {
@@ -185,16 +185,16 @@ type Account implements Node {
   "A list of physical or mailing addresses associated with this account"
   addressBook(
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
+    before: ConnectionCursor
 
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
+    first: ConnectionLimitInt
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
+    last: ConnectionLimitInt
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
     offset: Int
@@ -242,7 +242,7 @@ type Account implements Node {
   """
   The primary email address for the account. This matches the address in `emailRecords` where `provides` is `default`.
   """
-  primaryEmailAddress: Email!
+  primaryEmailAddress: String!
 
   "The date and time at which this account was last updated"
   updatedAt: DateTime
@@ -444,36 +444,33 @@ extend type Mutation {
 
 extend type Query {
   "Returns the account with the provided ID"
-  account(
-    "The account ID"
-    id: ID!
-  ): Account
+  account("The account ID" id: ID!): Account
 
   "Returns accounts optionally filtered by account groups"
   accounts(
     "Return only accounts in any of these groups"
-    groupIds: [ID],
+    groupIds: [ID]
 
     "Return accounts that aren't in any groups"
-    notInAnyGroups: Boolean,
+    notInAnyGroups: Boolean
 
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
+    before: ConnectionCursor
 
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
+    first: ConnectionLimitInt
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
+    last: ConnectionLimitInt
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: Int,
+    offset: Int
 
     "Return results sorted in this order"
-    sortOrder: SortOrder = asc,
+    sortOrder: SortOrder = asc
 
     "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
     sortBy: AccountSortByField = createdAt
@@ -482,22 +479,22 @@ extend type Query {
   "Returns customer accounts"
   customers(
     "Return only results that come after this cursor. Use this with `first` to specify the number of results to return."
-    after: ConnectionCursor,
+    after: ConnectionCursor
 
     "Return only results that come before this cursor. Use this with `last` to specify the number of results to return."
-    before: ConnectionCursor,
+    before: ConnectionCursor
 
     "Return at most this many results. This parameter may be used with either `after` or `offset` parameters."
-    first: ConnectionLimitInt,
+    first: ConnectionLimitInt
 
     "Return at most this many results. This parameter may be used with the `before` parameter."
-    last: ConnectionLimitInt,
+    last: ConnectionLimitInt
 
     "Return only results that come after the Nth result. This parameter may be used with the `first` parameter."
-    offset: Int,
+    offset: Int
 
     "Return results sorted in this order"
-    sortOrder: SortOrder = asc,
+    sortOrder: SortOrder = asc
 
     "By default, groups are sorted by when they were created, oldest first. Set this to sort by one of the other allowed fields"
     sortBy: AccountSortByField = createdAt
