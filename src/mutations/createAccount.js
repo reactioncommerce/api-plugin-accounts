@@ -56,19 +56,43 @@ export default async function createAccount(context, input) {
   let groups = new Set();
   let invites;
 
+  // Old login for creating accounts
   // if this is the first user created overall, add them to the
   // `system-manager` and `accounts-manager` groups
-  const anyAccount = await Accounts.findOne();
-  if (!anyAccount) {
-    const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
-    const systemManagerGroupId = await ensureSystemManagerGroup(context);
-    groups.add(systemManagerGroupId);
-    groups.add(accountsManagerGroupId);
-  } else {
-    // if this isn't the first account see if they were invited by another user
-    // find all invites for this email address, for all shops, and add to all groups
-    const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
-    invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
+  // const anyAccount = await Accounts.findOne();
+  // if (!anyAccount) {
+  //   const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
+  //   const systemManagerGroupId = await ensureSystemManagerGroup(context);
+  //   groups.add(systemManagerGroupId);
+  //   groups.add(accountsManagerGroupId);
+  //   console.log("Hello! I am an alert from  api-accounts-plugin!!");
+  // } else {
+  //   console.log("Hello! I am an alert from  api-accounts-plugin!!");
+  //   // if this isn't the first account see if they were invited by another user
+  //   // find all invites for this email address, for all shops, and add to all groups
+  //   const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
+  //   invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
+  //   groups = invites.reduce((allGroupIds, invite) => {
+  //     if (invite.groupIds) {
+  //       invite.groupIds.forEach((groupId) => allGroupIds.add(groupId));
+  //     }
+
+  //     if (invite.groupId) {
+  //       allGroupIds.add(invite.groupId);
+  //     }
+
+  //     return allGroupIds;
+  //   }, new Set());
+  // }
+
+
+  // Rewriten logic for creating accounts and inventations
+  // Apply `system-manager` and `accounts-manager` groups for accounts what was not invited
+  // if this isn't the first account see if they were invited by another user
+  // find all invites for this email address, for all shops, and add to all groups
+  const emailAddresses = emails.map((emailRecord) => emailRecord.address.toLowerCase());
+  invites = await AccountInvites.find({ email: { $in: emailAddresses } }).toArray();
+  if (invites.length > 0) {
     groups = invites.reduce((allGroupIds, invite) => {
       if (invite.groupIds) {
         invite.groupIds.forEach((groupId) => allGroupIds.add(groupId));
@@ -80,6 +104,11 @@ export default async function createAccount(context, input) {
 
       return allGroupIds;
     }, new Set());
+  } else {
+    const accountsManagerGroupId = await ensureAccountsManagerGroup(context);
+    const systemManagerGroupId = await ensureSystemManagerGroup(context);
+    groups.add(systemManagerGroupId);
+    groups.add(accountsManagerGroupId);
   }
 
   AccountSchema.validate(account);
