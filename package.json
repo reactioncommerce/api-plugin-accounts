@@ -9,14 +9,14 @@
   },
   "homepage": "https://github.com/OlehObodin/api-plugin-accounts",
   "url": "https://github.com/OlehObodin/api-plugin-accounts",
-  "email": "hello-open-commerce@mailchimp.com",
+  "email": "dev@it-lead.eu",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/OlehObodin/api-plugin-accounts.git"
   },
   "author": {
-    "name": "Reaction Commerce",
-    "email": "hello-open-commerce@mailchimp.com",
+    "name": "Reaction Commerce / Oleh Obodin",
+    "email": "dev@it-lead.eu",
     "url": "https://mailchimp.com/developer/open-commerce"
   },
   "license": "GPL-3.0",
