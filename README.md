@@ -1,3 +1,7 @@
+# This repository is deprecated
+
+This code is now located in our monorepo [here](https://github.com/reactioncommerce/reaction/tree/trunk/packages/api-plugins-accounts)
+
 # api-plugin-accounts
 
 [![npm (scoped)](https://img.shields.io/npm/v/@reactioncommerce/api-plugin-accounts.svg)](https://www.npmjs.com/package/@reactioncommerce/api-plugin-accounts)
